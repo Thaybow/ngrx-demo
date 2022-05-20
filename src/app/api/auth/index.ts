@@ -1,6 +1,6 @@
 import {ActionReducerMap} from '@ngrx/store';
 
-export const apiFeatureKey = 'api';
+export const authFeatureKey = 'auth';
 
 export interface State {
 
