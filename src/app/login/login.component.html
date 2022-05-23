@@ -1,0 +1,14 @@
+<form (submit)="onSubmit()"
+      [formGroup]="form">
+
+  <mat-form-field appearance="fill">
+    <mat-label>User</mat-label>
+    <input formControlName="user" matInput/>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Pass</mat-label>
+    <input formControlName="password" matInput/>
+  </mat-form-field>
+
+  <button type="submit">Click</button>
+</form>
