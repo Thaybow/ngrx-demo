@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {tap} from 'rxjs/operators';
+import {login} from '../auth/actions/auth-actions';
 import {AuthState} from '../auth/reducers';
 import {UserService} from '../auth/services/user.service';
 
@@ -37,17 +38,13 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     const val = this.form.value;
-
     this.userService.fetchUser(val)
       .pipe(
         tap(user => {
-
           console.log(user);
-
-          this.store.dispatch();
-
+          this.store.dispatch(login({user}));
         })
-      );
+      ).subscribe();
 
   }
 }

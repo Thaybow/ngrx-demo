@@ -7,17 +7,17 @@ import {User} from '../../login/login.component';
   providedIn: 'root'
 })
 export class UserService {
-  url = '/auth';
+  url = 'http://localhost:8080/api/auth';
 
   constructor(private httpClient: HttpClient) {
   }
 
   fetchUser(val: { user: string, password: string }): Observable<User> {
-    return this.httpClient.get<User>(`´${this.url}`, {
-      params: {
-        user: val.user,
-        password: val.password
-      }
+    return this.httpClient.post<User>(`${this.url}`, {
+
+      user: val.user,
+      password: val.password
+
     });
   }
 }
