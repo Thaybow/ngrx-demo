@@ -1,11 +1,13 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Store} from '@ngrx/store';
-import {tap} from 'rxjs/operators';
-import {login} from '../auth/actions/auth-actions';
-import {AuthState} from '../auth/reducers';
-import {UserService} from '../auth/services/user.service';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { tap } from 'rxjs/operators';
+import { login } from '../auth/actions/auth-actions';
+import { AuthState } from '../auth/reducers';
+import { UserService } from '../auth/services/user.service';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface User {
   user: string;
@@ -19,7 +21,8 @@ export interface User {
 })
 export class LoginComponent implements OnInit {
 
-  url = '/auth';
+  // @ts-ignore
+  user$: Observable<User>;
 
   form: FormGroup = this.fb.group({
     user: ['thib', [Validators.required]],
@@ -29,6 +32,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private httpClient: HttpClient,
               private userService: UserService,
+              private router: Router,
               private store: Store<AuthState>
   ) {
   }
@@ -37,12 +41,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const val = this.form.value;
-    this.userService.fetchUser(val)
+    this.userService.fetchUser(this.form.value)
       .pipe(
         tap(user => {
           console.log(user);
-          this.store.dispatch(login({user}));
+          this.store.dispatch(login({user: user, form: this.form.value}));
+          this.router.navigateByUrl('/users');
         })
       ).subscribe();
 
